@@ -1,12 +1,19 @@
+import React, { useState } from 'react';
 import './Expenses.css';
-import ExpenseItem from "./ExpenseItem"
-import Card from "../UI/Card"
+import ExpenseItem from './ExpenseItem';
+import Card from '../UI/Card';
+import ExpensesFilter from './ExpensesFilter';
 
 const Expenses = (props) => {
-  
+  const [currentFiltration, setCurrentFiltration] = useState("2023");
+  const getFilterHandler = (filtrationData) => {
+      setCurrentFiltration(filtrationData);
+    }
+  console.log(currentFiltration);
 
   return (
     <Card className='expenses'>
+      <ExpensesFilter selected={currentFiltration} onFiltration={getFilterHandler}></ExpensesFilter>
       <ExpenseItem
         title={props.items[0].title}
         price={props.items[0].amount}
