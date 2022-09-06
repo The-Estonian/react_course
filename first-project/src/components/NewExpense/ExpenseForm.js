@@ -5,7 +5,7 @@ import './ExpenseForm.css';
 const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredAmount, setEnteredAmount] = useState('');
-  const [enteredDate, setEneteredDate] = useState('');
+  const [enteredDate, setEnteredDate] = useState('');
 
   const titleChangeHandler = (e) => {
     setEnteredTitle(e.target.value);
@@ -16,7 +16,7 @@ const ExpenseForm = (props) => {
   };
 
   const dateChangeHandler = (e) => {
-    setEneteredDate(e.target.value);
+    setEnteredDate(e.target.value);
   };
 
   const submitHandler = (e) => {
@@ -28,7 +28,7 @@ const ExpenseForm = (props) => {
     };
     setEnteredTitle("")
     setEnteredAmount("")
-    setEneteredDate("")
+    setEnteredDate("")
     props.onSaveExpenseData(expenseData)
   };
 
