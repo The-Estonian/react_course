@@ -1,7 +1,8 @@
 .button {
     background: rgb(70, 4, 70);
     color: white;
-    padding: 0.4rem 1rem;
+    margin:0.5rem 0;
+    padding: 0.5rem 1rem;
     border: none;
     font-weight: bold;
 }

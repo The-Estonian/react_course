@@ -1,8 +1,10 @@
 .list{
+    position: relative;
+    top: 6rem;
     margin: auto;
     color: white;
     list-style: none;
-    width: 40rem;
+    width: 42rem;
     padding: 0;
 }
 
@@ -11,5 +13,5 @@
     background: white;
     color: black;
     border: 1px solid black;
-    margin: 1rem;
+    font-weight: bold;
 }

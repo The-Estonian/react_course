@@ -1,0 +1,67 @@
+.modal{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: gray;
+    z-index: 100;
+    opacity: 50%;
+    
+}
+
+.modalContainer{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.visible,
+.modalErrorText.visible,
+.bannerText.visible{
+    display: flex;
+}
+
+.modalErrorText{
+    display: none;
+    position: relative;
+    height: 10rem;
+    width: 30rem;
+    background: white;
+    z-index: 101;
+    border-radius: 0 0 12px 12px;
+}
+
+.modalErrorText p{
+    padding: 1rem;
+    font-weight: bold;
+}
+
+.modalErrorText button{
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+}
+
+.bannerText{
+    display: none;
+    position: relative;
+    background: purple;
+    height: 3rem;
+    width: 30rem;
+    border-radius:12px 12px 0 0 ;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: white;
+    z-index: 101;
+}
+
+.bannerText p{
+    padding: 0 1rem;
+    margin-top: 0.5rem;
+}

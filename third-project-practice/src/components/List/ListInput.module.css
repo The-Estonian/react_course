@@ -1,12 +1,11 @@
 .form{
-    /* border: 1px solid black; */
+    position: relative;
+    top: 5rem;
     padding: 0.6rem;
     height: 10rem;
     margin: auto;
-    margin-top: 5rem;
     width: 40rem;
     background: white;
-    /* border-radius: 12px; */
 }
 
 .form div label{
@@ -17,8 +16,8 @@
 }
 
 .form div {
-    width: 90%;
-    margin: 0.5rem;
+    width: 95%;
+    margin: 0.3rem auto;
 }
 
 .form div label span{
