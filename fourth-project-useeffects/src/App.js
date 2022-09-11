@@ -8,11 +8,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const storedeUserLoggedInInformation = localStorage.getItem('isLoggedIn');
-    if (storedeUserLoggedInInformation === "1") {
-      setIsLoggedIn(true)
-    } else {
-      setIsLoggedIn(false)
+    const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+
+    if (storedUserLoggedInInformation === '1') {
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -24,8 +23,8 @@ function App() {
   };
 
   const logoutHandler = () => {
+    localStorage.removeItem('isLoggedIn');
     setIsLoggedIn(false);
-    localStorage.setItem('isLoggedIn', '0')
   };
 
   return (
