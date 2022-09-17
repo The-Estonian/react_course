@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -8,12 +8,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
 
-  const fetchMoviesHandler = async () => {
+  const fetchMoviesHandler = useCallback(async() => {
     setIsLoading(true);
     setConnectionError(null);
     try {
       const response = await fetch('https://swapi.dev/api/films');
-      
+
       if (!response.ok) {
         throw new Error('Did not get any data from that address!');
       }
@@ -21,11 +21,16 @@ function App() {
       setMovies(moviesList.results);
       setIsLoading(false);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       console.log(error.message);
       setConnectionError(error.message);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, []);
+  
   // const fetchMoviesHandler = () => {
   //   fetch('https://swapi.dev/api/films')
   //     .then((response) => {
@@ -45,16 +50,33 @@ function App() {
   //     });
   // };
 
+  let content = <p>Found no movies!</p>;
+
+  if (movies.length > 0) {
+    content = <MoviesList movies={movies} />;
+  }
+
+  if (isLoading) {
+    content = <p>Loading the database...</p>;
+  }
+
+  if (connectionError) {
+    content = <p>{connectionError}</p>;
+  }
+
   return (
     <React.Fragment>
       <section>
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
       <section>
-        {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
-        {!isLoading && movies.length < 1 && !connectionError && <p>Fetch to get movies!</p>}
+        {content}
+        {/* {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
+        {!isLoading && movies.length < 1 && !connectionError && (
+          <p>Fetch to get movies!</p>
+        )}
         {isLoading && <p>Loading...</p>}
-        {connectionError && <p>{connectionError}</p>}
+        {connectionError && <p>{connectionError}</p>} */}
       </section>
     </React.Fragment>
   );
