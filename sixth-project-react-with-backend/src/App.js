@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
+import AddMovie from './components/AddMovie';
 import './App.css';
 
 function App() {
@@ -8,17 +9,29 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
 
-  const fetchMoviesHandler = useCallback(async() => {
+  const fetchMoviesHandler = useCallback(async () => {
     setIsLoading(true);
     setConnectionError(null);
     try {
-      const response = await fetch('https://swapi.dev/api/films');
+      const response = await fetch(
+        'https://testing-react-96b3e-default-rtdb.europe-west1.firebasedatabase.app/movies.json'
+      );
 
       if (!response.ok) {
         throw new Error('Did not get any data from that address!');
       }
       const moviesList = await response.json();
-      setMovies(moviesList.results);
+      console.log(moviesList);
+      const loadedMovies = [];
+      for (const key in moviesList) {
+        loadedMovies.push({
+          id: key,
+          title: moviesList[key].title,
+          releaseDate: moviesList[key].release_date,
+          openingText: moviesList[key].openingText,
+        });
+      }
+      setMovies(loadedMovies);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -30,7 +43,22 @@ function App() {
   useEffect(() => {
     fetchMoviesHandler();
   }, []);
-  
+
+  const addMovieHandler = async (movie) => {
+    const response = await fetch(
+      'https://testing-react-96b3e-default-rtdb.europe-west1.firebasedatabase.app/movies.json',
+      {
+        method: 'POST',
+        body: JSON.stringify(movie),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  };
+
   // const fetchMoviesHandler = () => {
   //   fetch('https://swapi.dev/api/films')
   //     .then((response) => {
@@ -67,9 +95,12 @@ function App() {
   return (
     <React.Fragment>
       <section>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        <AddMovie onAddMovie={addMovieHandler} />
       </section>
       <section>
+        <section>
+          <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+        </section>
         {content}
         {/* {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
         {!isLoading && movies.length < 1 && !connectionError && (
