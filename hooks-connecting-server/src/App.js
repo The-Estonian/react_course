@@ -8,7 +8,6 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const connection = {
     url: 'https://testing-react-96b3e-default-rtdb.europe-west1.firebasedatabase.app/tasks.json',
-    method: 'GET',
   };
   const fetchServerData = (datastream) => {
     const loadedTasks = [];
@@ -17,7 +16,7 @@ function App() {
     }
     setTasks(loadedTasks);
   };
-  const fetchTasks = useServerFetchHook(connection, fetchServerData);
+  const { isLoading, error, sendRequest: fetchTasks} = useServerFetchHook(connection, fetchServerData);
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState(null);
 
@@ -49,7 +48,7 @@ function App() {
   // };
 
   useEffect(() => {
-    fetchTasks.sendRequest(connection);
+    fetchTasks();
   }, []);
 
   const taskAddHandler = (task) => {
@@ -61,8 +60,8 @@ function App() {
       <NewTask onAddTask={taskAddHandler} />
       <Tasks
         items={tasks}
-        loading={fetchTasks.isLoading}
-        error={fetchTasks.error}
+        loading={isLoading}
+        error={error}
         onFetch={fetchTasks}
       />
     </React.Fragment>
