@@ -1,34 +1,48 @@
-import { useRef, useState } from 'react';
+import {useState} from 'react';
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('');
-  const [inputError, setInputError] = useState(false);
+  const [nameInputError, setNameInputError] = useState(false);
+  // const [formIsValid, setFormIsValid] = useState(false);
+
+
+  let formIsValid = false
+  if (nameInputError) {
+    formIsValid = true
+  }
+  // useEffect(() => {
+  //   if (nameInputError) {
+  //     setFormIsValid(true);
+  //   } else {
+  //     setFormIsValid(false)
+  //   }
+  // }, [nameInputError]);
 
   const nameInputChangeHandler = (e) => {
     setEnteredName(e.target.value);
-    setInputError(false)
+    setNameInputError(false);
   };
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
     if (enteredName.trim().length < 1) {
-      setInputError(true);
+      setNameInputError(true);
       return;
     } else {
-      setInputError(false);
+      setNameInputError(false);
     }
     setEnteredName('');
   };
 
   const onBlurChangeHandler = () => {
     if (enteredName.trim().length < 1) {
-      setInputError(true);
+      setNameInputError(true);
     } else {
-      setInputError(false);
+      setNameInputError(false);
     }
-  }
+  };
 
-  const classes = inputError ? "form-control invalid":"form-control"
+  const classes = nameInputError ? 'form-control invalid' : 'form-control';
 
   return (
     <form onSubmit={formSubmissionHandler}>
@@ -42,9 +56,13 @@ const SimpleInput = (props) => {
           onBlur={onBlurChangeHandler}
         />
       </div>
-      {inputError ? <p className="error-text">Entered name is invalid!</p> : ""}
+      {nameInputError ? (
+        <p className='error-text'>Entered name is invalid!</p>
+      ) : (
+        ''
+      )}
       <div className='form-actions'>
-        <button>Submit</button>
+        <button disabled={formIsValid}>Submit</button>
       </div>
     </form>
   );
