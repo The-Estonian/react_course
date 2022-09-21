@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useInput from '../hooks/use-input';
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('');
@@ -7,10 +8,6 @@ const SimpleInput = (props) => {
   const [emailInputError, setEmailInputError] = useState(false);
   // const [formIsValid, setFormIsValid] = useState(false);
 
-  let formIsValid = false;
-  if (nameInputError && emailInputError) {
-    formIsValid = true;
-  }
   const nameInputChangeHandler = (e) => {
     setEnteredName(e.target.value);
     setNameInputError(false);
@@ -29,7 +26,7 @@ const SimpleInput = (props) => {
     } else {
       setNameInputError(false);
     }
-    if (!enteredEmail.includes("@")) {
+    if (!enteredEmail.includes('@')) {
       setEmailInputError(true);
     } else {
       setEmailInputError(false);
@@ -46,7 +43,7 @@ const SimpleInput = (props) => {
     }
   };
   const onBlurEmailChangeHandler = () => {
-    if (!enteredEmail.includes("@")) {
+    if (!enteredEmail.includes('@')) {
       setEmailInputError(true);
     } else {
       setEmailInputError(false);
@@ -55,6 +52,23 @@ const SimpleInput = (props) => {
 
   const nameClass = nameInputError ? 'form-control invalid' : 'form-control';
   const emailClass = emailInputError ? 'form-control invalid' : 'form-control';
+  
+
+  const {jsx:lastNameInput, inputHasError} = useInput({
+    labelName: 'Family Name',
+    styleInput: 'form-control',
+    styleInvalidInput: 'invalid',
+    type: 'text',
+    id:"last-name",
+    errorMessage:"Please enter a correct Last Name",
+    errorStyles: "error-text"
+  });
+  console.log(inputHasError);
+
+  let formIsValid = false;
+  if (nameInputError || emailInputError || inputHasError) {
+    formIsValid = true;
+  }
 
   return (
     <form onSubmit={formSubmissionHandler}>
@@ -73,6 +87,7 @@ const SimpleInput = (props) => {
       ) : (
         ''
       )}
+      <div>{lastNameInput}</div>
       <div className={emailClass}>
         <label htmlFor='email'>Your Email</label>
         <input
