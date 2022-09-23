@@ -1,6 +1,10 @@
 import useInput from '../hooks/use-input';
 
 const BasicForm = (props) => {
+  const firstNameValidation = (input) => input.trim() < 1;
+  const lastNameValidation = (input) => input.trim() < 1;
+  const emailValidation = (input) => !input.includes('@');
+
   const {
     jsx: firstNameInput, // jsx output that generates input with label
     reset: firstNameReset, // resets input value on execution
@@ -14,7 +18,7 @@ const BasicForm = (props) => {
     id: 'first-name', // input ID
     errorMessage: 'Please enter your first name!', // input validation fail message
     errorStyles: 'error-text', // input validation fail message styles
-    isValidInput: (input) => input.trim() < 1, // input validation
+    isValidInput: firstNameValidation, // input validation
   });
 
   const {
@@ -30,7 +34,7 @@ const BasicForm = (props) => {
     id: 'last-name',
     errorMessage: 'Please enter your last name!',
     errorStyles: 'error-text',
-    isValidInput: (input) => input.trim() < 1,
+    isValidInput: lastNameValidation,
   });
 
   const {
@@ -46,17 +50,21 @@ const BasicForm = (props) => {
     id: 'email',
     errorMessage: 'Please enter your email!',
     errorStyles: 'error-text',
-    isValidInput: (input) => !input.includes('@'),
+    isValidInput: emailValidation,
   });
 
-  let submitButtonDisabled = false;
-
-  if (firstNameHasError || lastNameHasError || emailHasError) {
-    submitButtonDisabled = true;
+  let submitButtonDisabled = true;
+  if (
+    !firstNameValidation(firstName) &&
+    !lastNameValidation(lastName) &&
+    !emailValidation(email)
+  ) {
+    submitButtonDisabled = false;
   }
 
   const formSubmissionHandler = (e) => {
     e.preventDefault();
+
     console.log('Sending data to server!');
     console.log({
       firstName,

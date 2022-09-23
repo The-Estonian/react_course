@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 
 const useInput = (controls) => {
   const [input, setInput] = useState('');
-  const [inputError, setInputError] = useState(false);
+  const [inputError, setInputError] = useState(true);
 
   const inputChangeHandler = (e) => {
     setInput(e.target.value);
-    setInputError(false);
+    setInputError(true);
   };
   const onBlurChangeHandler = () => {
     if (controls.isValidInput(input)) {
-      setInputError(true);
-    } else {
       setInputError(false);
+    } else {
+      setInputError(true);
     }
   };
   const reset = () => {
     setInput('');
-    setInputError(false);
+    setInputError(true);
   };
 
-  const styleClasses = inputError
+  const styleClasses = !inputError
     ? `${controls.styleInput} ${controls.styleInvalidInput}`
     : controls.styleInput;
   return {
@@ -34,14 +34,14 @@ const useInput = (controls) => {
           onChange={inputChangeHandler}
           onBlur={onBlurChangeHandler}
         />
-        {inputError ? (
+        {!inputError ? (
           <p className={controls.errorStyles}>{controls.errorMessage}</p>
         ) : (
           ''
         )}
       </div>
     ),
-    inputHasError: inputError,
+    inputHasError: !inputError,
     reset: reset,
     data: input,
   };
