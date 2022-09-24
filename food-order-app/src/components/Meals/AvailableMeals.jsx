@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styles from './AvailableMeals.module.css';
 import Card from '../UI/Card';
@@ -46,18 +46,58 @@ const setMeals = async (meals) => {
 
 const AvailableMeals = (props) => {
   const [availableMeals, setAvailableMeals] = useState([]);
-  // setMeals(DUMMY_MEALS)
-  const fetchMeals = useCallback(async () => {
-    const response = await fetch(
-      'https://testing-react-96b3e-default-rtdb.europe-west1.firebasedatabase.app/meals.json'
-    );
+  const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState();
+  // for (let i = 0; i < DUMMY_MEALS.length; i++) {
+  //   setMeals(DUMMY_MEALS[i])
 
-    const meals = await response.json();
-    setAvailableMeals(meals["-NCdz7jCCXMEHD11g_vU"]);
-  }, []);
+  // }
   useEffect(() => {
-    fetchMeals();
+    const fetchMeals = async () => {
+      const response = await fetch(
+        'https://testing-react-96b3e-default-rtdb.europe-west1.firebasedatabase.app/meals.json'
+      );
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+
+      const meals = await response.json();
+      const mealList = [];
+      for (const key in meals) {
+        mealList.push({
+          id: key,
+          name: meals[key].name,
+          price: meals[key].price,
+          description: meals[key].description,
+        });
+      }
+      setAvailableMeals(mealList);
+      setIsLoading(false);
+    };
+
+    fetchMeals().catch((error) => {
+      setIsLoading(false);
+      setHttpError(error.message);
+    });
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className={styles.MealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={styles.MealsError}>
+        <p>{httpError}</p>
+      </section>
+    );
+  }
 
   const mealsList = availableMeals.map((meal) => (
     <MealItem
