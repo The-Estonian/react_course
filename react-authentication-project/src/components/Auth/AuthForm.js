@@ -9,6 +9,7 @@ const AuthForm = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const history = useHistory();
@@ -72,10 +73,12 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        console.log(data);
-        authCtx.login(data.idToken);
+        const expirationTime = new Date(
+          new Date().getTime() + +data.expiresIn * 1000
+        );
+        authCtx.login(data.idToken, expirationTime);
         history.replace('/');
-      });
+      }).catch((err) => console.log(err));
   };
 
   return (
